@@ -1,11 +1,10 @@
 services:
   aerekos_primary:
-    image: node:22-slim
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 2222:2222
-    volumes:
-      - ./:/app
+      - "2222:2222"
     env_file:
       - .env
-    working_dir: /app
-    command: npm start
+    restart: always
