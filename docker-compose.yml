@@ -1,0 +1,11 @@
+services:
+  aerekos_primary:
+    image: node:22-slim
+    ports:
+      - 2222:2222
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    working_dir: /app
+    command: npm start
