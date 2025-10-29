@@ -1,10 +1,10 @@
 services:
   aerekos_primary:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "2222:2222"
     env_file:
       - .env
+    environment:
+      - HOST_IP=${HOST_IP}
     restart: always

@@ -1,15 +1,13 @@
 {
   "name": "aerekos_primary",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "start": "bash -lc \"./scripts/start-with-host-ip.sh\"",
+  "start:detached": "bash -lc \"./scripts/start-with-host-ip.sh -d\"",
+    "stop": "docker compose down",
+    "container:start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^5.1.0"
   }
