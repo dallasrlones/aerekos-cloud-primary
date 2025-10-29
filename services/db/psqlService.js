@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 
 // PostgreSQL connection details
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/mydb',
+    connectionString: process.env.PSQL_DATABASE_URL || 'postgresql://postgres:password@localhost:5432/mydb',
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 

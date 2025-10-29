@@ -26,7 +26,16 @@ const checkConnectionsAlive = async () => {
 
 server.listen(PORT, '0.0.0.0', async () => {
   console.log(`Host LAN IP: ${HOST_IP}`);
-  console.log(`Server → http://${HOST_IP}:${PORT}`);
+  console.log(`Server \u2192 http://${HOST_IP}:${PORT}`);
+
+  // Ensure services establish connections before health check
+  try {
+    await redisService.connect();
+  } catch (err) {
+    console.error('Redis failed to connect during startup:', err);
+    process.exit(1);
+  }
+
   const connectionsAlive = await checkConnectionsAlive();
   if (connectionsAlive) {
     console.log('All connections are alive.');
