@@ -1,9 +1,12 @@
 const express = require('express');
 
+const deviceController = require('./controllers/deviceController');
+
 const HOST_IP = process.env.HOST_IP;
 const PORT = process.env.PORT;
 
 const server = express();
+server.use('/devices', deviceController);
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 

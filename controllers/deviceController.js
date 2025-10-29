@@ -3,6 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/register', (req, res) => {
-    const device = req.body.device;
-    res.json({ device: device.ip });
+    console.log(req.body)
+    // const device = req.body.device;
+    // res.json({ device: device.ip });
+    res.json({ status: 'Device registered successfully' });
 });
+
+module.exports = router;

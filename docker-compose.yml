@@ -2,7 +2,7 @@ services:
   aerekos_primary:
     build: .
     ports:
-      - "${PORT}:2222"
+      - "2222:2222"
     env_file:
       - .env
     environment:
