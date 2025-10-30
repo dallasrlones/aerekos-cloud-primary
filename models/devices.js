@@ -1,7 +1,7 @@
 const { generateCreate, generateFindById, generateFindBy, generateFindOneBy, generateUpdate } = require('../services/db/neo4jService');
 
 const LABEL = 'DEVICE';
-const REQUIRED_FIELDS = ['ip_address', 'name', 'token'];
+const REQUIRED_FIELDS = ['ip_address', 'name', 'token', 'services'];
 const UNIQUE_FIELDS = ['token'];
 const LOCKED_FIELDS = ['id'];
 
