@@ -2,7 +2,7 @@ const express = require('express');
 
 const deviceController = require('./controllers/deviceController');
 // psqlService checkConnectionAlive
-const psqlService = require('./services/db/psqlService');
+const neo4jService = require('./services/db/neo4jService');
 const redisService = require('./services/db/redisService');
 
 const HOST_IP = process.env.HOST_IP;
@@ -19,9 +19,9 @@ server.get('/', (_req, res) => {
 
 const checkConnectionsAlive = async () => {
   const redisAlive = await redisService.checkConnectionsAlive();
-  const psqlAlive = await psqlService.checkConnectionsAlive();
+  const neo4jAlive = await neo4jService.checkConnectionsAlive();
 
-  return redisAlive && psqlAlive;
+  return redisAlive && neo4jAlive;
 };
 
 server.listen(PORT, '0.0.0.0', async () => {
