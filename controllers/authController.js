@@ -19,7 +19,8 @@ function generateRefreshToken() {
 
 // register
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    if (email && typeof email === 'string') email = email.toLowerCase();
     try {
         const existingUser = await User.findOneBy({ email });
         if (existingUser) {
@@ -37,7 +38,8 @@ router.post('/register', async (req, res) => {
 
 // login
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    if (email && typeof email === 'string') email = email.toLowerCase();
     try {
         const user = await User.findOneBy({ email });
         if (!user) {
@@ -113,7 +115,8 @@ router.post('/logout', async (req, res) => {
 
 // change password
 router.post('/change-password', async (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
+    let { email, oldPassword, newPassword } = req.body;
+    if (email && typeof email === 'string') email = email.toLowerCase();
     try {
         const user = await User.findOneBy({ email });
         if (!user) {

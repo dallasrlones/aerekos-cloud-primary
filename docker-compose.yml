@@ -7,4 +7,17 @@ services:
       - .env
     environment:
       - HOST_IP=${HOST_IP}
+      - JWT_SECRET=${JWT_SECRET:-dev_secret_change_me}
+      - REFRESH_TOKEN_EXP_SECONDS=${REFRESH_TOKEN_EXP_SECONDS:-604800}
+    restart: always
+  aerekos_frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE=http://aerekos_primary:2222
+    depends_on:
+      - aerekos_primary
     restart: always
