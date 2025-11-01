@@ -1,4 +1,4 @@
 const generateCRUDRoutes = require('./helpers/crudHelper.js');
 const authMiddleware = require('../middleware/authMiddleware');
-const router = generateCRUDRoutes('dockerServices', authMiddleware);
+const router = generateCRUDRoutes('projects', authMiddleware);
 module.exports = router;

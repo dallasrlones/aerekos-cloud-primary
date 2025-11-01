@@ -1,6 +1,4 @@
 const express = require('express');
-
-const deviceController = require('./controllers/deviceController');
 const authController = require('./controllers/authController');
 // psqlService checkConnectionAlive
 const neo4jService = require('./services/db/neo4jService');
@@ -14,8 +12,7 @@ const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-// Simple CORS middleware for frontend requests (adjust origin as needed)
-server.use((req, res, next) => {
+const corsMiddleware = (req, res, next) => {
   const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
   res.header('Access-Control-Allow-Origin', allowedOrigin);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -25,13 +22,29 @@ server.use((req, res, next) => {
     return res.sendStatus(200);
   }
   next();
-});
+};
+
+server.use(corsMiddleware);
 
 // mount auth routes
-server.use('/auth', authController);
+// server.use('/auth', authController);
 
-// device routes (protected/internal)
-server.use('/devices', deviceController);
+// find all the controllers in ./controllers and server.use them based on their file name
+const fs = require('fs');
+const path = require('path');
+
+const controllersPath = path.join(__dirname, 'controllers');
+fs.readdirSync(controllersPath).forEach((file) => {
+  if (file === 'authController.js') return; // already mounted
+  if (file.endsWith('Controller.js')) {
+    const route = `/${file.replace('Controller.js', '')}`;
+    console.log(`Mounting controller for route: ${route}`);
+    const controller = require(path.join(controllersPath, file));
+    server.use(route, controller);
+  }
+});
+
+// health check endpoint
 
 server.get('/', (_req, res) => {
   res.send('online');

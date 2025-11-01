@@ -1,6 +1,6 @@
-// I want to make a router for device-related operations
-const express = require('express');
-const router = express.Router();
+const generateCRUDRoutes = require('./helpers/crudHelper.js');
+const authMiddleware = require('../middleware/authMiddleware');
+const router = generateCRUDRoutes('projects', authMiddleware);
 
 router.post('/register', (req, res) => {
     console.log(req.body)
