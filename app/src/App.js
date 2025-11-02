@@ -16,7 +16,7 @@ function RequireAuth({ children }) {
 function RoutesSwitch() {
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading) return <div style={{ padding: 20 }}>Loading...</div>;
+  if (loading) return <div style={{ padding: 20 }}>Loading... 🚀</div>;
 
   return isAuthenticated ? (
     <Routes>
@@ -37,9 +37,9 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <nav style={{ padding: 10, background: '#eee' }}>
+        {/* <nav style={{ padding: 10, background: '#eee' }}>
           <Link to="/">Public</Link> | <Link to="/login">Login</Link> | <Link to="/register">Register</Link> | <Link to="/private">Private</Link>
-        </nav>
+        </nav> */}
         <RoutesSwitch />
       </BrowserRouter>
     </AuthProvider>

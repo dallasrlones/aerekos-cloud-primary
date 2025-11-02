@@ -1,0 +1,13 @@
+FROM node:22-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 2222
+
+# Check DEV_MODE and run appropriate command
+CMD if [ "$DEV_MODE" = "true" ]; then npm run dev:backend; else node server.js; fi

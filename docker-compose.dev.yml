@@ -1,0 +1,37 @@
+services:
+  aerekos_primary:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "2222:2222"
+    env_file:
+      - .env
+    environment:
+      - HOST_IP=${HOST_IP}
+      - JWT_SECRET=${JWT_SECRET:-dev_secret_change_me}
+      - REFRESH_TOKEN_EXP_SECONDS=${REFRESH_TOKEN_EXP_SECONDS:-604800}
+      - DEV_MODE=true
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: always
+  aerekos_frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE=http://aerekos_primary:2222
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    depends_on:
+      - aerekos_primary
+    restart: always
+    stdin_open: true
+    tty: true
+
