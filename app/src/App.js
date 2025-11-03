@@ -86,7 +86,27 @@ function RoutesSwitch() {
       {/* Protected routes - all wrapped by RequireAuth */}
       <Route element={<RequireAuth />}>
         <Route path="/dashboard" element={<PrivateHome />} />
-        {generateCRUDRoutes(['devices', 'docker_containers', 'projects', 'aerekos_services'])}
+        {generateCRUDRoutes([
+          'devices', 
+          'docker_containers', 
+          'projects', 
+          'aerekos_services',
+          'storage',
+          'cdn',
+          'database',
+          'cache',
+          'queue',
+          'compute',
+          'container',
+          'serverless',
+          'loadbalancer',
+          'dns',
+          'monitoring',
+          'logging',
+          'secrets',
+          'registry',
+          'api_keys',
+        ])}
       </Route>
     </Routes>
   );

@@ -4,6 +4,15 @@ import { privatePOST, privatePUT } from '../../services/httpService';
 import '../../styles/forms.css';
 
 function Field({ field, onChange, value }) {
+    // If field has a custom component, render it directly
+    if (field.component) {
+        return (
+            <div className="input-group">
+                {field.component}
+            </div>
+        );
+    }
+
     const renderInput = () => {
         const baseProps = {
             name: field.name,
@@ -102,7 +111,7 @@ export default function FormContainer({
         const { name, type, value, checked } = e.target;
         setFormData({ 
             ...formData, 
-            [name]: type === 'checkbox' ? checked : value 
+            [name]: type === 'checkbox' ? checked : (Array.isArray(value) ? value : value)
         });
     };
 

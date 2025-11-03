@@ -9,7 +9,6 @@ export default function Devices() {
   useEffect(() => {
     (async () => {
       const res = await privateGET('/devices');
-      console.log(res);
       setDevices(res);
     })();
   }, []);

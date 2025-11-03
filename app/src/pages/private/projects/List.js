@@ -9,7 +9,6 @@ export default function Projects() {
   useEffect(() => {
     (async () => {
       const res = await privateGET('/projects');
-      console.log(res);
       setProjects(res);
     })();
   }, []);

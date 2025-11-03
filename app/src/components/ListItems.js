@@ -6,7 +6,7 @@ function ListItems({ items, route, children }) {
     <div>
       {items && items.map((item) => (
         <ListItem key={item.id} item={item} route={route}>
-          {children(item)}
+          {children ? children(item) : item.name}
         </ListItem>
       ))}
       {items && items.length === 0 && <div>No {route.toUpperCase()} found <Link to={`/${route}/create`}>Create {route.toUpperCase()}</Link></div>}
