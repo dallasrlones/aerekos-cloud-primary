@@ -24,7 +24,7 @@ export default function Login() {
       });
       if (res.accessToken) {
         auth.login({ accessToken: res.accessToken, refreshToken: res.refreshToken });
-        navigate('/private');
+        navigate('/dashboard');
       } else {
         setMsg(res.message || 'Login failed');
       }

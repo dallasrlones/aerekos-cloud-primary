@@ -1,15 +1,16 @@
-const { generateCreate, generateFindById, generateFindBy, generateFindOneBy, generateUpdate } = require('../services/db/neo4jService');
+const { generateCrud } = require('../services/db/neo4jService');
+const crypto = require('crypto');
 
 const LABEL = 'DEVICE';
 const REQUIRED_FIELDS = ['ip_address', 'name', 'token', 'services'];
 const UNIQUE_FIELDS = ['token'];
 const LOCKED_FIELDS = ['id'];
 
-const deviceModel = {};
-deviceModel.findById = generateFindById(LABEL);
-deviceModel.findBy = generateFindBy(LABEL);
-deviceModel.findOneBy = generateFindOneBy(LABEL);
-deviceModel.create = generateCreate(LABEL, { required: REQUIRED_FIELDS, unique: UNIQUE_FIELDS });
-deviceModel.update = generateUpdate(LABEL, { locked: LOCKED_FIELDS });
+const beforeCreate = async (device) => {
+  device.api_key = crypto.randomBytes(32).toString('hex');
+  console.log('beforeCreate hook - device:', device);
+  return device;
+}
+const deviceModel = generateCrud(LABEL, { required: REQUIRED_FIELDS, unique: UNIQUE_FIELDS, locked: LOCKED_FIELDS, before: beforeCreate });
 
 module.exports = deviceModel;

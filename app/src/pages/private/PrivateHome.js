@@ -1,31 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { privateFetch } from '../../services/httpService';
-import { useAuth } from '../../context/AuthContext';
+import Devices from './devices/List.js';
+import Projects from './projects/List.js';
+import AerekosServices from './aerekos_services/List.js';
 
 export default function PrivateHome() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-    //   try {
-    //     const res = await privateFetch('/devices', { method: 'GET' });
-    //     setData(JSON.stringify(res));
-    //   } catch (err) {
-    //     setData('Error: ' + err.message);
-    //   }
-    })();
-  }, []);
-
-  const auth = useAuth();
-  const logout = async () => {
-    await auth.logout();
-    window.location.href = '/';
-  };
-
   return (
     <div style={{ padding: 20 }}>
-      <h2>Private Area</h2>
-      <button onClick={logout}>Logout</button>
+      <h2>Dashboard</h2>
+      <div>
+        <h3>Devices</h3>
+        <Devices />
+      </div>
+      
+      <hr />
+      <div>
+        <h3>Projects</h3>
+        <Projects />
+      </div>
+
+      <hr />
+      <div>
+        <h3>Aerekos Services</h3>
+        <AerekosServices />
+      </div>
     </div>
   );
 }

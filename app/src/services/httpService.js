@@ -17,6 +17,13 @@ const storage = {
   }
 };
 
+// Callback to be set by AuthContext for handling logout
+let logoutCallback = null;
+
+function setLogoutCallback(callback) {
+  logoutCallback = callback;
+}
+
 async function publicFetch(path, opts = {}) {
   const url = `${API_BASE}${path}`;
   const r = await fetch(url, { ...opts });
@@ -53,7 +60,11 @@ async function privateFetch(path, opts = {}) {
     const newToken = await refreshAccessToken();
     if (!newToken) {
       storage.clear();
-      throw new Error('Unauthorized');
+      // Trigger logout callback if available
+      if (logoutCallback) {
+        logoutCallback();
+      }
+      throw new Error('Unauthorized - Session expired');
     }
     headers['Authorization'] = `Bearer ${newToken}`;
     res = await fetch(url, { ...opts, headers });
@@ -64,4 +75,20 @@ async function privateFetch(path, opts = {}) {
   return json;
 }
 
-export { publicFetch, privateFetch, storage, refreshAccessToken };
+async function privateGET(path, opts = {}) {
+  return await privateFetch(path, { ...opts, method: 'GET' });
+}
+
+async function privatePOST(path, opts = {}) {
+  return await privateFetch(path, { ...opts, method: 'POST' });
+}
+
+async function privatePUT(path, opts = {}) {
+  return await privateFetch(path, { ...opts, method: 'PUT' });
+}
+
+async function privateDELETE(path, opts = {}) {
+  return await privateFetch(path, { ...opts, method: 'DELETE' });
+}
+
+export { publicFetch, privateFetch, privateGET, privatePOST, privatePUT, privateDELETE, storage, refreshAccessToken, setLogoutCallback };

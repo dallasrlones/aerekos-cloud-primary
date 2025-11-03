@@ -148,7 +148,8 @@ try {
 
         return async (createObj) => {
             try {
-                if (options.before !== undefined) {
+                if (options && options.before !== undefined) {
+                    console.log(`[${label}] Executing before hook`);
                     // Await the execution of the before hook
                     createObj = await options.before(createObj);
                 }
@@ -214,8 +215,21 @@ try {
     }
 
     function generateFindBy(label, options) {
-        return async (findObj) => {
-            const query = `MATCH (${label[0].toLowerCase()}:${label}) WHERE ${objToAnd(label[0].toLowerCase(), findObj)} RETURN ${label[0].toLowerCase()} ORDER BY ${label[0].toLowerCase()}.created_at DESC`;
+        return async (findObj, paginationOptions = {}) => {
+            const { index = 0, limit } = paginationOptions;
+            
+            let query = `MATCH (${label[0].toLowerCase()}:${label}) WHERE ${objToAnd(label[0].toLowerCase(), findObj)} RETURN ${label[0].toLowerCase()} ORDER BY ${label[0].toLowerCase()}.created_at DESC`;
+            
+            // Add SKIP clause if index is provided
+            if (index > 0) {
+                query += ` SKIP ${index}`;
+            }
+            
+            // Add LIMIT clause if limit is provided
+            if (limit !== undefined && limit > 0) {
+                query += ` LIMIT ${limit}`;
+            }
+            
             let results = await runCypherQuery(query);
             results = results.map(result => {
                 return convertTypes(result[label[0].toLowerCase()].properties);
@@ -397,16 +411,16 @@ try {
         };
     }
     
-    function generateCrud(label, { required=[], unique=[], locked=[] }) {
+    function generateCrud(label, { required=[], unique=[], locked=[], before, after }) {
         const tmp = {
             LABEL: label,
-            create: generateCreate(label, { required, unique }),
-            findById: generateFindById(label),
-            findBy: generateFindBy(label),
-            findOneBy: generateFindOneBy(label),
+            create: generateCreate(label, { required, unique, before, after }),
+            findById: generateFindById(label, { after }),
+            findBy: generateFindBy(label, { after }),
+            findOneBy: generateFindOneBy(label, { after }),
             findBySortBy: generateFindBySortBy(label),
             findOneBySortBy: generateFindOneBySortBy(label),
-            update: generateUpdate(label, { locked }),
+            update: generateUpdate(label, { locked, before, after }),
             deleteById: generateDeleteById(label),
             deleteBy: generateDeleteBy(label)
         }
