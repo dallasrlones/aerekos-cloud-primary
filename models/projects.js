@@ -1,6 +1,6 @@
 const { generateCrud } = require('../services/db/neo4jService');
 
-const LABEL = 'DOCKER_SERVICE';
+const LABEL = 'PROJECT';
 const REQUIRED_FIELDS = ['user_id', 'name'];
 const UNIQUE_FIELDS = ['name'];
 const LOCKED_FIELDS = ['id'];

@@ -23,7 +23,7 @@ export default function Devices() {
           <span style={{ fontWeight: 'bold', marginLeft: 15 }}>{item.name}</span>
         </>}
       </ListItems>
-      <Link to="/devices/create" style={{ marginTop: 20, display: 'block' }}>Create Device</Link>
+      {/* <Link to="/devices/create" style={{ marginTop: 20, display: 'block' }}>Create Device</Link> */}
     </div>
   );
 }
